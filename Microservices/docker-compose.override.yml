@@ -1,0 +1,74 @@
+version: '3.4'
+services:
+  eureka-server:
+    environment:
+       - EUREKA_SERVER_ENABLE_SELF_PRESERVATION=false
+    ports:
+       - 8761:8761
+  UserService:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Docker
+      - ASPNETCORE_URLS=http://+:80
+      - EUREKA_CLIENT_SERVICEURL=http://eureka-server:8761/eureka
+    ports:
+      - 8000:80
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
+    depends_on:
+      - eureka-server
+ 
+  InventoryService:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Docker
+      - ASPNETCORE_URLS=http://+:80
+      - EUREKA_CLIENT_SERVICEURL=http://eureka-server:8761/eureka
+    ports:
+      - 8100:80
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
+    depends_on:
+      - eureka-server
+ 
+  ProductDetailService:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Docker
+      - ASPNETCORE_URLS=http://+:80
+      - EUREKA_CLIENT_SERVICEURL=http://eureka-server:8761/eureka
+    ports:
+      - 8400:80
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
+    depends_on:
+      - eureka-server
+  CartService:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Docker
+      - ASPNETCORE_URLS=http://+:80
+      - EUREKA_CLIENT_SERVICEURL=http://eureka-server:8761/eureka
+    ports:
+      - 8200:80
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
+    depends_on:
+      - eureka-server
+ 
+  Gateway:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Docker
+      - ASPNETCORE_URLS=http://+:80
+      - EUREKA_CLIENT_SERVICEURL=http://eureka-server:8761/eureka
+    ports:
+      - 8300:80
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
+    depends_on:
+      - eureka-server
+      - UserService
+      - CartService
+      - InventoryService
+      - ProductDetailService

@@ -1,0 +1,73 @@
+﻿{
+  "GlobalConfiguration": {
+    "BaseUrl": "http://localhost:8001",
+    "SecurityOptions": {
+      "AuthenticationProviderKey": "Bearer",
+      "IsTokenLoggingEnabled": true,
+      "IsCertificateThumbprintValidationEnabled": false,
+      "IsCertificateChainValidationEnabled": false
+    }
+  },
+  "Routes": [
+    {
+      "DownstreamPathTemplate": "/api/Inventory/{any}",
+      "DownstreamScheme": "http",
+      "LoadBalancerOptions": {
+        "Type": "LeastConnection" // Specify the load balancing algorithm
+      },
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "inventoryservice",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/Inventory/{any}",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/ProductDetail/{any}",
+      "DownstreamScheme": "http",
+      "LoadBalancerOptions": {
+        "Type": "LeastConnection" // Specify the load balancing algorithm
+      },
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "productdetailservice",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/ProductDetail/{any}",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/User/userlogin",
+      "DownstreamScheme": "http",
+      "LoadBalancerOptions": {
+        "Type": "LeastConnection" // Specify the load balancing algorithm
+      },
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "userservice",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/User/userlogin",
+      "UpstreamHttpMethod": [ "POST" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/Cart/{any}",
+      "DownstreamScheme": "http",
+      "LoadBalancerOptions": {
+        "Type": "LeastConnection" // Specify the load balancing algorithm
+      },
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "cartservice",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/Cart/{any}",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ]
+    }
+  ]
+}

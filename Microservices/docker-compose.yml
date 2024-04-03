@@ -1,0 +1,67 @@
+version: '3.4'
+services:
+  eureka-server:
+    container_name: eureka-server
+    image: steeltoeoss/eurekaserver:latest
+    restart: on-failure
+    hostname: eureka-server
+    networks:
+        - backend_network
+ 
+  InventoryService:
+    container_name: inventoryservice
+    image: inventoryservice:latest
+    restart: on-failure
+    hostname: inventoryservice
+    build:
+      context: .
+      dockerfile: InventoryService/Dockerfile
+    networks:
+       - backend_network
+
+  ProductDetailService:
+    container_name: productdetailservice
+    image: productdetailservice:latest
+    restart: on-failure
+    hostname: productdetailservice
+    build:
+      context: .
+      dockerfile: ProductDetailService/Dockerfile
+    networks:
+       - backend_network
+ 
+  CartService:
+    container_name: cartservice
+    image: cartservice:latest
+    restart: on-failure
+    hostname: cartservice
+    build:
+      context: ./
+      dockerfile: CartService/Dockerfile
+    networks:
+       - backend_network
+ 
+  UserService:
+    container_name: userservice
+    image: userservice:latest
+    restart: on-failure
+    hostname: userservice
+    build:
+      context: ./
+      dockerfile: UserService/Dockerfile
+    networks:
+       - backend_network
+ 
+  Gateway:
+    container_name: gateway
+    image: gateway:latest
+    restart: on-failure
+    hostname: gateway
+    build:
+      context: ./
+      dockerfile: Gateway/Dockerfile
+    networks:
+       - backend_network
+ 
+networks:
+    backend_network:
